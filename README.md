@@ -9,18 +9,15 @@ This is a PyTorch implementation of a transformer decoder model, similar to the 
 ## Model Architecture
 The model consists of multiple stacked decoder blocks. Each decoder block includes a multi-head self-attention mechanism:
 
-\[
-\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \ldots, \text{head}_h)W^O
-\]
+$\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \ldots, \text{head}_h)W^O$
+
 where 
-\[
-\text{head}_i = \text{Attention}(QW^Q_i, KW^K_i, VW^V_i)
-\]
+
+$\text{head}_i = \text{Attention}(QW^Q_i, KW^K_i, VW^V_i)$
 
 The attention mechanism uses scaled dot-product attention:
-\[
-\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
-\]
+
+$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$
 
 All decoder blocks are causal, meaning the attention weights are masked to prevent attending to future tokens.
 
@@ -33,19 +30,17 @@ The final layer is a linear layer that projects the output of the last decoder b
 For testing purposes, the model is trained on a simple dummy dataset. Given a sequence of integers, the task is to predict the sorted version of the sequence in ascending order.
 
 **Example:**
-- Input: \([1, 2, 1, 0, 1]\) → Prediction: \([0, 1, 1, 1, 2]\)
-- Input: \([1, 0, 0, 1, 1]\) → Prediction: \([0, 0, 1, 1, 1]\)
+- Input: [1, 2, 1, 0, 1] → Prediction: [0, 1, 1, 1, 2]
+- Input: [1, 0, 0, 1, 1] → Prediction: [0, 0, 1, 1, 1]
 
 ### Training Process
 During training, the model is provided with an input sequence concatenated with the target sequence (denoted as `[input + target]`), and is trained autoregressively.
 
-For an input sequence, say \([1, 2, 1, 0, 1]\), the model sees:
+For an input sequence, say [1, 2, 1, 0, 1], the model sees:
 
-- Input: \([1, 2, 1, 0, 1, 0, 1, 1, 1]\)
-- Target: \([2, 1, 0, 1, 0, 1, 1, 1, 2]\) * \([0, 0, 0, 0, 1, 1, 1, 1, 1]\)
+- Input : [1, 2, 1, 0, 1, 0, 1, 1, 1]
+- Target: [2, 1, 0, 1, 0, 1, 1, 1, 2] * [0, 0, 0, 0, 1, 1, 1, 1, 1]
 
-The training target is shifted by one time step to allow the model to predict the next token in sequence. Cross-entropy loss is used to compare the predicted logits with the target sequence.
-  
 The model optimizes using cross-entropy loss between the predicted output and the true target.
 The prefix part of the target sequence is masked for loss calculation.
 
@@ -82,3 +77,4 @@ Attention from one token to others:
  - Big reference: [karpathy/minGPT](https://github.com/karpathy/minGPT)
  - Other implementation reference: [openai/gpt-2](https://github.com/openai/gpt-2)
  - Visualization reference: [jessevig/bertviz](https://github.com/jessevig/bertviz)
+ - Youtube tutorial that teaches debugging [How to Debug PyTorch Source Code - Deep Learning in Python](https://www.youtube.com/watch?v=el39D7rz7K0)
