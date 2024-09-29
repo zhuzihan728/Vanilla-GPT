@@ -1,0 +1,9 @@
+embed_dim: 48
+num_heads: 3
+num_blocks: 3
+batch_size: 128
+n_epochs: 10
+lr: 5.0e-4
+save_dir: 'out_logs'
+log_interval: 128 # batch interval
+val_interval_epoch: 1 # epoch interval
